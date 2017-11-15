@@ -1,4 +1,4 @@
-class HomeScreen < PM::Screen
+class HomeScreen < PM::TableScreen
   title "缺列表"
   stylesheet HomeScreenStylesheet
 
