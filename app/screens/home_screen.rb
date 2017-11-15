@@ -1,5 +1,5 @@
 class HomeScreen < PM::TableScreen
-  title "缺列表"
+  title "職缺一覽"
   stylesheet HomeScreenStylesheet
 
   include NavigationHelper
@@ -11,6 +11,16 @@ class HomeScreen < PM::TableScreen
     load_jobs
   end
 
+  def sign_out_button
+    Auth.sign_out do
+      app.delegate.open_authenticated_root
+    end
+  end
+
+  def sign_in_button
+    open SignInScreen.new(nav_bar: true)
+  end
+
   def load_jobs
     Job.all do |response, jobs|
       if response.success?
@@ -18,7 +28,7 @@ class HomeScreen < PM::TableScreen
         stop_refreshing
         update_table_data
       else
-        app.alert 'Sorry, there was an error fetching the jobs.'
+        app.alert "Sorry, there was an error fetching the jobs."
         mp response.error.localizedDescription
       end
     end
@@ -38,22 +48,11 @@ class HomeScreen < PM::TableScreen
     }]
   end
 
-  def will_animate_rotate(_orientation, _duration)
-    find.all.reapply_styles
-  end
-
   def view_job(args)
     open JobScreen.new(args)
   end
 
-  def sign_out_button
-    Auth.sign_out do
-      app.delegate.open_authenticated_root
-    end
+  def will_animate_rotate(_orientation, _duration)
+    find.all.reapply_styles
   end
-
-  def sign_in_button
-    open SignInScreen.new(nav_bar: true)
-  end
-
 end
