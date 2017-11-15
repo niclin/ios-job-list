@@ -66,6 +66,8 @@ Motion::Project::App.setup do |app|
     app.entitlements['keychain-access-groups'] = [ app.seed_id + '.' + app.identifier ]
   end
 
+  app.info_plist['NSAppTransportSecurity'] = { 'NSAllowsArbitraryLoads' => true } # allow any HTTP request
+
   puts "Name: #{app.name}"
   puts "Using profile: #{app.provisioning_profile}"
   puts "Using certificate: #{app.codesign_certificate}"
