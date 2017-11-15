@@ -3,6 +3,12 @@ class HomeScreen < PM::TableScreen
   stylesheet HomeScreenStylesheet
 
   def on_load
+    if Auth.signed_in?
+      set_nav_bar_button :right, title: "Logout", action: :sign_out_button
+    else
+      set_nav_bar_button :right, title: "Sign In", action: :sign_in_button
+    end
+
     @jobs = []
     load_jobs
   end
@@ -41,4 +47,15 @@ class HomeScreen < PM::TableScreen
   def view_job(args)
     open JobScreen.new(args)
   end
+
+  def sign_out_button
+    Auth.sign_out do
+      open_tab_bar HomeScreen.new(nav_bar: true)
+    end
+  end
+
+  def sign_in_button
+    open SignInScreen.new(nav_bar: true)
+  end
+
 end
