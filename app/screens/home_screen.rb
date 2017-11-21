@@ -5,7 +5,14 @@ class HomeScreen < PM::TableScreen
   include NavigationHelper
 
   def on_load
-    add_side_menu
+  if Auth.signed_in?
+    puts "YES"
+    set_nav_bar_button :right, title: "Logout", action: :sign_out_button
+  else
+    puts "No"
+    set_nav_bar_button :right, title: "Sign In", action: :sign_in_button
+  end
+
 
     @jobs = []
     load_jobs

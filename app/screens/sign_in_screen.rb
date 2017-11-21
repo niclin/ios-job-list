@@ -36,6 +36,7 @@ class SignInScreen < PM::XLFormScreen
   def authenticate
     Auth.sign_in(email: values["email"], password: values["password"]) do |response|
       if response.success?
+        Store["token"] = response.object["token"]
         ApiClient.update_authorization_header(Auth.authorization_header)
         app.delegate.open_authenticated_root
       elsif response.object
